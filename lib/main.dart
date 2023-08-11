@@ -151,6 +151,7 @@ class _ListReportPageState extends State<ListReportPage> {
                           fontFamily: 'SAP72',
                           fontSize: 12,
                           color: Colors.grey,
+                          fontStyle: FontStyle.italic
                         ),
                       ),
                     ],
@@ -209,7 +210,7 @@ class _ListReportPageState extends State<ListReportPage> {
                   // Add button functionality here
                 },
                 child: Text(
-                  'Add',
+                  'Edit',
                   style: TextStyle(
                     color: Colors.blue,
                     fontFamily: 'SAP72',
