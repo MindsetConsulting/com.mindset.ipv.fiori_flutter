@@ -15,8 +15,32 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class ListReportPage extends StatelessWidget {
-  const ListReportPage({super.key});
+class ListReportPage extends StatefulWidget {
+  const ListReportPage({Key? key}) : super(key: key);
+
+  @override
+  _ListReportPageState createState() => _ListReportPageState();
+}
+
+class _ListReportPageState extends State<ListReportPage> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchText = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      setState(() {
+        _searchText = _searchController.text;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +71,11 @@ class ListReportPage extends StatelessWidget {
       ),
       body: Column(
         children: [
+          SizedBox(height: 8),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
+              controller: _searchController,
               style: TextStyle(
                 fontFamily: 'SAP72',
                 fontStyle: FontStyle.italic,
@@ -66,6 +92,7 @@ class ListReportPage extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: 8),
           Expanded(
             child: ListView.separated(
               itemCount: 10,
@@ -77,6 +104,15 @@ class ListReportPage extends StatelessWidget {
                 );
               },
               itemBuilder: (BuildContext context, int index) {
+                if (_searchText.isNotEmpty &&
+                    !('Item $index'
+                            .toLowerCase()
+                            .contains(_searchText.toLowerCase()) ||
+                        'Description of item $index'
+                            .toLowerCase()
+                            .contains(_searchText.toLowerCase()))) {
+                  return SizedBox.shrink();
+                }
                 return ListTile(
                   contentPadding: const EdgeInsets.symmetric(
                     vertical: 8,
@@ -140,6 +176,51 @@ class ListReportPage extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        shape: const CircularNotchedRectangle(),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: const Color.fromARGB(161, 224, 224, 224),
+                width: 1.0,
+              ),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: () {
+                  // Filter button functionality here
+                },
+                child: Text(
+                  'Filter',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontFamily: 'SAP72',
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  // Add button functionality here
+                },
+                child: Text(
+                  'Add',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontFamily: 'SAP72',
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -162,14 +243,14 @@ class ObjectDetailPage extends StatelessWidget {
                 Icons.arrow_back_ios,
                 color: Colors.blue,
               ),
-              Text(
-                'Back',
-                style: TextStyle(
-                  fontFamily: 'SAP72',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
+              // Text(
+              //   'Back',
+              //   style: TextStyle(
+              //     fontFamily: 'SAP72',
+              //     fontWeight: FontWeight.bold,
+              //     color: Colors.blue,
+              //   ),
+              // ),
             ],
           ),
           onPressed: () {
