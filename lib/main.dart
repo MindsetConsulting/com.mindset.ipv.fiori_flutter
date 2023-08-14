@@ -25,7 +25,18 @@ class ListReportPage extends StatefulWidget {
 class _ListReportPageState extends State<ListReportPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = '';
-  List<Map<String, String>> _items = [];
+  List<Map<String, String>> _items = [
+    {
+      'item': 'Stuff',
+      'description': 'my stuff',
+      'additionalInfo': 'don\'t touch my stuff'
+    },
+    {
+      'item': 'Things',
+      'description': 'your things',
+      'additionalInfo': 'all your things are belong to us'
+    },
+  ];
   bool isEditing = false;
 
   @override
@@ -208,17 +219,26 @@ class _ListReportPageState extends State<ListReportPage> {
                     vertical: 8,
                     horizontal: 16,
                   ),
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    child: Text(
-                      '$index',
-                      style: TextStyle(
-                        fontFamily: 'SAP72',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  leading: isEditing
+                      ? Checkbox(
+                          value: _items[index]['isChecked'] == 'true',
+                          onChanged: (value) {
+                            setState(() {
+                              _items[index]['isChecked'] = value.toString();
+                            });
+                          },
+                        )
+                      : CircleAvatar(
+                          backgroundColor: Colors.blue,
+                          child: Text(
+                            '$index',
+                            style: TextStyle(
+                              fontFamily: 'SAP72',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
