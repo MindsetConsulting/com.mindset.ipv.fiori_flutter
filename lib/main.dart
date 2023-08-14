@@ -26,6 +26,7 @@ class _ListReportPageState extends State<ListReportPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = '';
   List<Map<String, String>> _items = [];
+  bool isEditing = false;
 
   @override
   void initState() {
@@ -282,10 +283,16 @@ class _ListReportPageState extends State<ListReportPage> {
             children: [
               TextButton(
                 onPressed: () {
-                  // Filter button functionality here
+                  if (isEditing) {
+                    setState(() {
+                      isEditing = !isEditing;
+                    });
+                  } else {
+                    // Filter button functionality here
+                  }
                 },
                 child: Text(
-                  'Filter',
+                  isEditing ? 'Cancel' : 'Filter',
                   style: TextStyle(
                     color: Colors.blue,
                     fontFamily: 'SAP72',
@@ -295,10 +302,12 @@ class _ListReportPageState extends State<ListReportPage> {
               ),
               TextButton(
                 onPressed: () {
-                  // Add button functionality here
+                  setState(() {
+                    isEditing = !isEditing;
+                  });
                 },
                 child: Text(
-                  'Edit',
+                  isEditing ? 'Delete' : 'Edit',
                   style: TextStyle(
                     color: Colors.blue,
                     fontFamily: 'SAP72',
