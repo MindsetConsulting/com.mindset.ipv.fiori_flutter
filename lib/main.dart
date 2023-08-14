@@ -25,6 +25,7 @@ class ListReportPage extends StatefulWidget {
 class _ListReportPageState extends State<ListReportPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = '';
+  List<Map<String, String>> _items = [];
 
   @override
   void initState() {
@@ -40,6 +41,91 @@ class _ListReportPageState extends State<ListReportPage> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _showAddItemDialog() {
+    String item = '';
+    String description = '';
+    String additionalInfo = '';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Add Item',
+            style: TextStyle(
+              fontFamily: 'SAP72',
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Item',
+                ),
+                onChanged: (value) {
+                  item = value;
+                },
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                ),
+                onChanged: (value) {
+                  description = value;
+                },
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Additional Information',
+                ),
+                onChanged: (value) {
+                  additionalInfo = value;
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontFamily: 'SAP72',
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _items.add({
+                    'item': item,
+                    'description': description,
+                    'additionalInfo': additionalInfo,
+                  });
+                });
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Add Item',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontFamily: 'SAP72',
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -64,7 +150,7 @@ class _ListReportPageState extends State<ListReportPage> {
               color: Colors.blue,
             ),
             onPressed: () {
-              // Add button functionality here
+              _showAddItemDialog();
             },
           ),
         ],
@@ -95,7 +181,7 @@ class _ListReportPageState extends State<ListReportPage> {
           SizedBox(height: 8),
           Expanded(
             child: ListView.separated(
-              itemCount: 10,
+              itemCount: _items.length,
               separatorBuilder: (BuildContext context, int index) {
                 return Divider(
                   color: Colors.grey[300],
@@ -105,10 +191,13 @@ class _ListReportPageState extends State<ListReportPage> {
               },
               itemBuilder: (BuildContext context, int index) {
                 if (_searchText.isNotEmpty &&
-                    !('Item $index'
+                    !(_items[index]['item']!
                             .toLowerCase()
                             .contains(_searchText.toLowerCase()) ||
-                        'Description of item $index'
+                        _items[index]['description']!
+                            .toLowerCase()
+                            .contains(_searchText.toLowerCase()) ||
+                        _items[index]['additionalInfo']!
                             .toLowerCase()
                             .contains(_searchText.toLowerCase()))) {
                   return SizedBox.shrink();
@@ -133,26 +222,25 @@ class _ListReportPageState extends State<ListReportPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Item $index',
+                        _items[index]['item']!,
                         style: TextStyle(
                           fontFamily: 'SAP72',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        'Description of item $index',
+                        _items[index]['description']!,
                         style: TextStyle(
                           fontFamily: 'SAP72',
                         ),
                       ),
                       Text(
-                        'Additional information about item $index',
+                        _items[index]['additionalInfo']!, // Modified line
                         style: TextStyle(
-                          fontFamily: 'SAP72',
-                          fontSize: 12,
-                          color: Colors.grey,
-                          fontStyle: FontStyle.italic
-                        ),
+                            fontFamily: 'SAP72',
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontStyle: FontStyle.italic),
                       ),
                     ],
                   ),
