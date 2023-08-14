@@ -37,6 +37,7 @@ class _ListReportPageState extends State<ListReportPage> {
       'additionalInfo': 'all your things are belong to us'
     },
   ];
+  
   bool isEditing = false;
 
   @override
@@ -114,7 +115,7 @@ class _ListReportPageState extends State<ListReportPage> {
                 ),
               ),
             ),
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 setState(() {
                   _items.add({
@@ -128,7 +129,7 @@ class _ListReportPageState extends State<ListReportPage> {
               child: Text(
                 'Add Item',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.white,
                   fontFamily: 'SAP72',
                   fontSize: 16,
                 ),
@@ -320,6 +321,7 @@ class _ListReportPageState extends State<ListReportPage> {
                   ),
                 ),
               ),
+              !isEditing ?
               TextButton(
                 onPressed: () {
                   setState(() {
@@ -327,14 +329,54 @@ class _ListReportPageState extends State<ListReportPage> {
                   });
                 },
                 child: Text(
-                  isEditing ? 'Delete' : 'Edit',
+                  'Edit',
                   style: TextStyle(
                     color: Colors.blue,
                     fontFamily: 'SAP72',
                     fontSize: 16,
                   ),
                 ),
+              )
+              :
+              TextButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Confirm Deletion'),
+                    content: Text('Are you sure you want to delete the item?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _items.removeWhere((item) => item['isChecked'] == 'true');
+                            isEditing = false;
+                          });
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Delete'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Text(
+              'Delete',
+              style: TextStyle(
+                color: Colors.blue,
+                fontFamily: 'SAP72',
+                fontSize: 16,
               ),
+            ),
+          ),
             ],
           ),
         ),
