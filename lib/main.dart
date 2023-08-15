@@ -37,7 +37,7 @@ class _ListReportPageState extends State<ListReportPage> {
       'state': 'CA',
       'zipCode': '12345',
       'country': 'USA',
-      'notes': 'This is a note',
+      'notes': 'This is a note|This is another note',
     },
     {
       'id': '1',
@@ -334,8 +334,16 @@ class _ListReportPageState extends State<ListReportPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      ObjectDetailPage(item: _items[index]),
+                                  builder: (context) => ObjectDetailPage(
+                                    item: _items[index],
+                                    updateItemStatus: (updatedItem) {
+                                      setState(() {
+                                        int index = _items.indexWhere((item) =>
+                                            item['id'] == updatedItem['id']);
+                                        _items[index] = updatedItem;
+                                      });
+                                    },
+                                  ),
                                 ),
                               );
                             },
@@ -449,10 +457,82 @@ class _ListReportPageState extends State<ListReportPage> {
   }
 }
 
-class ObjectDetailPage extends StatelessWidget {
-  final Map<String, String> item;
 
-  const ObjectDetailPage({Key? key, required this.item}) : super(key: key);
+
+class ObjectDetailPage extends StatefulWidget {
+  final Map<String, String> item;
+  final Function(Map<String, String>) updateItemStatus;
+
+  const ObjectDetailPage({
+    Key? key,
+    required this.item,
+    required this.updateItemStatus,
+  }) : super(key: key);
+
+  @override
+  _ObjectDetailPageState createState() => _ObjectDetailPageState();
+}
+
+class _ObjectDetailPageState extends State<ObjectDetailPage> {
+  String _status = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _status = widget.item['status']!;
+  }
+
+  void _updateStatus(String newStatus) {
+    setState(() {
+      _status = newStatus;
+    });
+    widget.updateItemStatus({...widget.item, 'status': newStatus});
+  }
+
+  void _showConfirmationDialog(String action) {
+    String title = '';
+    String message = '';
+    String confirmText = '';
+
+    if (action == 'Approve') {
+      title = 'Confirm Approval';
+      message = 'Are you sure you want to approve this item?';
+      confirmText = 'Approve';
+    } else if (action == 'Reject') {
+      title = 'Confirm Rejection';
+      message = 'Are you sure you want to reject this item?';
+      confirmText = 'Reject';
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (action == 'Approve') {
+                  _updateStatus('Approved');
+                } else if (action == 'Reject') {
+                  _updateStatus('Rejected');
+                }
+                Navigator.of(context).pop();
+              },
+              child: Text(confirmText),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -511,7 +591,7 @@ class ObjectDetailPage extends StatelessWidget {
                       CircleAvatar(
                         backgroundColor: Colors.blue,
                         child: Text(
-                          '${item['id']}',
+                          '${widget.item['id']}',
                           style: const TextStyle(
                             fontFamily: 'SAP72',
                             fontWeight: FontWeight.bold,
@@ -525,7 +605,7 @@ class ObjectDetailPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${item['item']}',
+                              '${widget.item['item']}',
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -533,14 +613,14 @@ class ObjectDetailPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              '${item['description']}',
+                              '${widget.item['description']}',
                               style: const TextStyle(
                                 fontSize: 14,
                               ),
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              '${item['additionalInfo']}',
+                              '${widget.item['additionalInfo']}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontStyle: FontStyle.italic,
@@ -551,14 +631,14 @@ class ObjectDetailPage extends StatelessWidget {
                       ),
                       const SizedBox(width: 16),
                       Icon(
-                        item['status'] == 'Approved'
+                        _status == 'Approved'
                             ? Icons.check_circle_outline_rounded
-                            : item['status'] == 'Pending'
+                            : _status == 'Pending'
                                 ? Icons.pending_actions
                                 : Icons.cancel_outlined,
-                        color: item['status'] == 'Approved'
+                        color: _status == 'Approved'
                             ? Colors.green
-                            : item['status'] == 'Pending'
+                            : _status == 'Pending'
                                 ? Colors.blue
                                 : Colors.red,
                       ),
@@ -590,21 +670,21 @@ class ObjectDetailPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${item['street']}',
+                      '${widget.item['street']}',
                       style: const TextStyle(
                         fontSize: 14,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${item['city']?.isNotEmpty ?? false ? '${item['city']}, ' : ''}${item['state']?.isNotEmpty ?? false ? '${item['state']}, ' : ''}${item['zipCode']?.isNotEmpty ?? false ? '${item['zipCode']}' : ''}',
+                      '${widget.item['city']?.isNotEmpty ?? false ? '${widget.item['city']}, ' : ''}${widget.item['state']?.isNotEmpty ?? false ? '${widget.item['state']}, ' : ''}${widget.item['zipCode']?.isNotEmpty ?? false ? '${widget.item['zipCode']}' : ''}',
                       style: const TextStyle(
                         fontSize: 14,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${item['country']}',
+                      '${widget.item['country']}',
                       style: const TextStyle(
                         fontSize: 14,
                       ),
@@ -648,6 +728,63 @@ class ObjectDetailPage extends StatelessWidget {
               color: Colors.grey[200],
               height: 30,
             ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _status == 'Approved' || _status == 'Rejected'
+                ? const TextButton(
+                    onPressed: null,
+                    child: Text(
+                      'Reject',
+                      style: TextStyle(
+                        fontFamily: 'SAP72',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  )
+                : TextButton(
+                    onPressed: () {
+                      _showConfirmationDialog('Reject');
+                    },
+                    child: const Text(
+                      'Reject',
+                      style: TextStyle(
+                        fontFamily: 'SAP72',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+            _status == 'Approved' || _status == 'Rejected'
+                ? const TextButton(
+                    onPressed: null,
+                    child: Text(
+                      'Approve',
+                      style: TextStyle(
+                        fontFamily: 'SAP72',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  )
+                : TextButton(
+                    onPressed: () {
+                      _showConfirmationDialog('Approve');
+                    },
+                    child: const Text(
+                      'Approve',
+                      style: TextStyle(
+                        fontFamily: 'SAP72',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),
