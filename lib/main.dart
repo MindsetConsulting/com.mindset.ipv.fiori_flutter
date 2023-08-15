@@ -52,6 +52,19 @@ class _ListReportPageState extends State<ListReportPage> {
       'country': 'USA',
       'notes': 'This is a note',
     },
+    {
+      'id': '2',
+      'item': 'Product',
+      'description': 'our product',
+      'additionalInfo': 'this is the best product',
+      'status': 'Pending',
+      'street': '789 Main St',
+      'city': 'Anytown',
+      'state': 'CA',
+      'zipCode': '12345',
+      'country': 'USA',
+      'notes': 'This is a note',
+    },
   ];
 
   bool isEditing = false;
@@ -256,47 +269,72 @@ class _ListReportPageState extends State<ListReportPage> {
                             ),
                           ),
                         ),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        _items[index]['item']!,
-                        style: const TextStyle(
-                          fontFamily: 'SAP72',
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _items[index]['item']!,
+                              style: const TextStyle(
+                                fontFamily: 'SAP72',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              _items[index]['description']!,
+                              style: const TextStyle(
+                                fontFamily: 'SAP72',
+                              ),
+                            ),
+                            Text(
+                              _items[index]['additionalInfo']!,
+                              style: const TextStyle(
+                                  fontFamily: 'SAP72',
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontStyle: FontStyle.italic),
+                            ),
+                          ],
                         ),
                       ),
-                      Text(
-                        _items[index]['description']!,
-                        style: const TextStyle(
-                          fontFamily: 'SAP72',
-                        ),
-                      ),
-                      Text(
-                        _items[index]['additionalInfo']!,
-                        style: const TextStyle(
-                            fontFamily: 'SAP72',
-                            fontSize: 12,
-                            color: Colors.grey,
-                            fontStyle: FontStyle.italic),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            _items[index]['status'] == 'Approved'
+                                ? Icons.check_circle_outline_rounded
+                                : _items[index]['status'] == 'Pending'
+                                    ? Icons.pending_actions
+                                    : Icons.cancel_outlined,
+                            color: _items[index]['status'] == 'Approved'
+                                ? Colors.green
+                                : _items[index]['status'] == 'Pending'
+                                    ? Colors.blue
+                                    : Colors.red,
+                          ),
+                          SizedBox(width: 8),
+                          IconButton(
+                            iconSize: 20,
+                            icon: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.grey[300],
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ObjectDetailPage(item: _items[index]),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-                  trailing: IconButton(
-                    iconSize: 20,
-                    icon: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.grey[300],
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ObjectDetailPage(item: _items[index]),
-                        ),
-                      );
-                    },
                   ),
                 );
               },
@@ -481,7 +519,7 @@ class ObjectDetailPage extends StatelessWidget {
                             Text(
                               '${item['item']}',
                               style: TextStyle(
-                                fontSize: 24,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
