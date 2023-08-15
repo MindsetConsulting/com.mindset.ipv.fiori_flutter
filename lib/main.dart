@@ -25,7 +25,7 @@ class ListReportPage extends StatefulWidget {
 class _ListReportPageState extends State<ListReportPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = '';
-  List<Map<String, String>> _items = [
+  final List<Map<String, String>> _items = [
     {
       'id': '0',
       'item': 'Stuff',
@@ -148,9 +148,17 @@ class _ListReportPageState extends State<ListReportPage> {
               onPressed: () {
                 setState(() {
                   _items.add({
+                    'id': _items.length.toString(),
                     'item': item,
                     'description': description,
                     'additionalInfo': additionalInfo,
+                    'status': 'Pending',
+                    'street': '',
+                    'city': '',
+                    'state': '',
+                    'zipCode': '',
+                    'country': ' ',
+                    'notes': '{}',
                   });
                 });
                 Navigator.pop(context);
@@ -242,7 +250,7 @@ class _ListReportPageState extends State<ListReportPage> {
                         _items[index]['additionalInfo']!
                             .toLowerCase()
                             .contains(_searchText.toLowerCase()))) {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }
                 return ListTile(
                   contentPadding: const EdgeInsets.symmetric(
@@ -315,7 +323,7 @@ class _ListReportPageState extends State<ListReportPage> {
                                     ? Colors.blue
                                     : Colors.red,
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           IconButton(
                             iconSize: 20,
                             icon: Icon(
@@ -476,7 +484,7 @@ class ObjectDetailPage extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {},
-            child: Text(
+            child: const Text(
               'Edit',
               style: TextStyle(
                 fontFamily: 'SAP72',
@@ -504,36 +512,36 @@ class ObjectDetailPage extends StatelessWidget {
                         backgroundColor: Colors.blue,
                         child: Text(
                           '${item['id']}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'SAP72',
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
                       ),
-                      SizedBox(width: 16),
+                      const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               '${item['item']}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(height: 2),
+                            const SizedBox(height: 2),
                             Text(
                               '${item['description']}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                               ),
                             ),
-                            SizedBox(height: 2),
+                            const SizedBox(height: 2),
                             Text(
                               '${item['additionalInfo']}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 fontStyle: FontStyle.italic,
                               ),
@@ -541,18 +549,31 @@ class ObjectDetailPage extends StatelessWidget {
                           ],
                         ),
                       ),
+                      const SizedBox(width: 16),
+                      Icon(
+                        item['status'] == 'Approved'
+                            ? Icons.check_circle_outline_rounded
+                            : item['status'] == 'Pending'
+                                ? Icons.pending_actions
+                                : Icons.cancel_outlined,
+                        color: item['status'] == 'Approved'
+                            ? Colors.green
+                            : item['status'] == 'Pending'
+                                ? Colors.blue
+                                : Colors.red,
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
               width: double.infinity,
               color: Colors.grey[200],
               height: 30,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
@@ -560,31 +581,31 @@ class ObjectDetailPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Location',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
                       '${item['street']}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
-                      '${item['city']}, ${item['state']}, ${item['zipCode']}',
-                      style: TextStyle(
+                      '${item['city']?.isNotEmpty ?? false ? '${item['city']}, ' : ''}${item['state']?.isNotEmpty ?? false ? '${item['state']}, ' : ''}${item['zipCode']?.isNotEmpty ?? false ? '${item['zipCode']}' : ''}',
+                      style: const TextStyle(
                         fontSize: 14,
                       ),
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 2),
                     Text(
                       '${item['country']}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                       ),
                     ),
@@ -592,30 +613,40 @@ class ObjectDetailPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
               width: double.infinity,
               color: Colors.grey[200],
               height: 30,
             ),
-            SizedBox(height: 10),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Notes',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
+            const SizedBox(height: 10),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Notes',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              color: Colors.grey[200],
+              height: 2,
+            ),
+            const SizedBox(height: 10),
+
+            Container(
+              width: double.infinity,
+              color: Colors.grey[200],
+              height: 30,
             ),
           ],
         ),
