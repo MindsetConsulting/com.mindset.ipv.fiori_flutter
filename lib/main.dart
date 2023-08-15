@@ -29,12 +29,24 @@ class _ListReportPageState extends State<ListReportPage> {
     {
       'item': 'Stuff',
       'description': 'my stuff',
-      'additionalInfo': 'don\'t touch my stuff'
+      'additionalInfo': 'don\'t touch my stuff',
+      'status': 'Approved',
+      'address': '123 Main St',
+      'city': 'Anytown',
+      'state': 'CA',
+      'zip': '12345',
+      'notes': 'This is a note',
     },
     {
       'item': 'Things',
       'description': 'your things',
-      'additionalInfo': 'all your things are belong to us'
+      'additionalInfo': 'all your things are belong to us',
+      'status': 'Rejected',
+      'address': '456 Main St',
+      'city': 'Anytown',
+      'state': 'CA',
+      'zip': '12345',
+      'notes': 'This is a note',
     },
   ];
   
