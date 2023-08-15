@@ -27,29 +27,33 @@ class _ListReportPageState extends State<ListReportPage> {
   String _searchText = '';
   List<Map<String, String>> _items = [
     {
+      'id': '0',
       'item': 'Stuff',
       'description': 'my stuff',
       'additionalInfo': 'don\'t touch my stuff',
       'status': 'Approved',
-      'address': '123 Main St',
+      'street': '123 Main St',
       'city': 'Anytown',
       'state': 'CA',
-      'zip': '12345',
+      'zipCode': '12345',
+      'country': 'USA',
       'notes': 'This is a note',
     },
     {
+      'id': '1',
       'item': 'Things',
       'description': 'your things',
       'additionalInfo': 'all your things are belong to us',
       'status': 'Rejected',
-      'address': '456 Main St',
+      'street': '456 Main St',
       'city': 'Anytown',
       'state': 'CA',
-      'zip': '12345',
+      'zipCode': '12345',
+      'country': 'USA',
       'notes': 'This is a note',
     },
   ];
-  
+
   bool isEditing = false;
 
   @override
@@ -77,7 +81,7 @@ class _ListReportPageState extends State<ListReportPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
+          title: const Text(
             'Add Item',
             style: TextStyle(
               fontFamily: 'SAP72',
@@ -88,7 +92,7 @@ class _ListReportPageState extends State<ListReportPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Item',
                 ),
                 onChanged: (value) {
@@ -96,7 +100,7 @@ class _ListReportPageState extends State<ListReportPage> {
                 },
               ),
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Description',
                 ),
                 onChanged: (value) {
@@ -104,7 +108,7 @@ class _ListReportPageState extends State<ListReportPage> {
                 },
               ),
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Additional Information',
                 ),
                 onChanged: (value) {
@@ -118,7 +122,7 @@ class _ListReportPageState extends State<ListReportPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text(
+              child: const Text(
                 'Cancel',
                 style: TextStyle(
                   color: Colors.blue,
@@ -138,7 +142,7 @@ class _ListReportPageState extends State<ListReportPage> {
                 });
                 Navigator.pop(context);
               },
-              child: Text(
+              child: const Text(
                 'Add Item',
                 style: TextStyle(
                   color: Colors.white,
@@ -159,7 +163,7 @@ class _ListReportPageState extends State<ListReportPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'List Report',
           style: TextStyle(
             fontFamily: 'SAP72',
@@ -169,7 +173,7 @@ class _ListReportPageState extends State<ListReportPage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.add,
               size: 32,
               color: Colors.blue,
@@ -182,12 +186,12 @@ class _ListReportPageState extends State<ListReportPage> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
               controller: _searchController,
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'SAP72',
                 fontStyle: FontStyle.italic,
               ),
@@ -203,7 +207,7 @@ class _ListReportPageState extends State<ListReportPage> {
               ),
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Expanded(
             child: ListView.separated(
               itemCount: _items.length,
@@ -244,8 +248,8 @@ class _ListReportPageState extends State<ListReportPage> {
                       : CircleAvatar(
                           backgroundColor: Colors.blue,
                           child: Text(
-                            '$index',
-                            style: TextStyle(
+                            '${_items[index]['id']}',
+                            style: const TextStyle(
                               fontFamily: 'SAP72',
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -257,20 +261,20 @@ class _ListReportPageState extends State<ListReportPage> {
                     children: [
                       Text(
                         _items[index]['item']!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'SAP72',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
                         _items[index]['description']!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'SAP72',
                         ),
                       ),
                       Text(
-                        _items[index]['additionalInfo']!, // Modified line
-                        style: TextStyle(
+                        _items[index]['additionalInfo']!,
+                        style: const TextStyle(
                             fontFamily: 'SAP72',
                             fontSize: 12,
                             color: Colors.grey,
@@ -288,7 +292,8 @@ class _ListReportPageState extends State<ListReportPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ObjectDetailPage(index: index),
+                          builder: (context) =>
+                              ObjectDetailPage(item: _items[index]),
                         ),
                       );
                     },
@@ -303,10 +308,10 @@ class _ListReportPageState extends State<ListReportPage> {
         color: Colors.white,
         shape: const CircularNotchedRectangle(),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(
-                color: const Color.fromARGB(161, 224, 224, 224),
+                color: Color.fromARGB(161, 224, 224, 224),
                 width: 1.0,
               ),
             ),
@@ -326,69 +331,70 @@ class _ListReportPageState extends State<ListReportPage> {
                 },
                 child: Text(
                   isEditing ? 'Cancel' : 'Filter',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.blue,
                     fontFamily: 'SAP72',
                     fontSize: 16,
                   ),
                 ),
               ),
-              !isEditing ?
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    isEditing = !isEditing;
-                  });
-                },
-                child: Text(
-                  'Edit',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontFamily: 'SAP72',
-                    fontSize: 16,
-                  ),
-                ),
-              )
-              :
-              TextButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Confirm Deletion'),
-                    content: Text('Are you sure you want to delete the item?'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Cancel'),
+              !isEditing
+                  ? TextButton(
+                      onPressed: () {
+                        setState(() {
+                          isEditing = !isEditing;
+                        });
+                      },
+                      child: const Text(
+                        'Edit',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontFamily: 'SAP72',
+                          fontSize: 16,
+                        ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _items.removeWhere((item) => item['isChecked'] == 'true');
-                            isEditing = false;
-                          });
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Delete'),
+                    )
+                  : TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Confirm Deletion'),
+                              content: const Text(
+                                  'Are you sure you want to delete the item?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _items.removeWhere((item) =>
+                                          item['isChecked'] == 'true');
+                                      isEditing = false;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Delete'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: const Text(
+                        'Delete',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontFamily: 'SAP72',
+                          fontSize: 16,
+                        ),
                       ),
-                    ],
-                  );
-                },
-              );
-            },
-            child: Text(
-              'Delete',
-              style: TextStyle(
-                color: Colors.blue,
-                fontFamily: 'SAP72',
-                fontSize: 16,
-              ),
-            ),
-          ),
+                    ),
             ],
           ),
         ),
@@ -398,9 +404,9 @@ class _ListReportPageState extends State<ListReportPage> {
 }
 
 class ObjectDetailPage extends StatelessWidget {
-  final int index;
+  final Map<String, String> item;
 
-  const ObjectDetailPage({Key? key, required this.index}) : super(key: key);
+  const ObjectDetailPage({Key? key, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -409,28 +415,20 @@ class ObjectDetailPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Row(
+          icon: const Row(
             children: [
               Icon(
                 Icons.arrow_back_ios,
                 color: Colors.blue,
               ),
-              // Text(
-              //   'Back',
-              //   style: TextStyle(
-              //     fontFamily: 'SAP72',
-              //     fontWeight: FontWeight.bold,
-              //     color: Colors.blue,
-              //   ),
-              // ),
             ],
           ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-          'Object $index Details',
+        title: const Text(
+          'Object Details',
           style: TextStyle(
             fontFamily: 'SAP72',
             fontWeight: FontWeight.bold,
@@ -438,26 +436,150 @@ class ObjectDetailPage extends StatelessWidget {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              size: 32,
-              color: Colors.blue,
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'Edit',
+              style: TextStyle(
+                fontFamily: 'SAP72',
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
             ),
-            onPressed: () {
-              // Add button functionality here
-            },
           ),
         ],
       ),
-      body: Center(
-        child: Text(
-          'Details for Object $index',
-          style: TextStyle(
-            fontFamily: 'SAP72',
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 70,
+              child: Center(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.blue,
+                        child: Text(
+                          '${item['id']}',
+                          style: TextStyle(
+                            fontFamily: 'SAP72',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${item['item']}',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              '${item['description']}',
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              '${item['additionalInfo']}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              color: Colors.grey[200],
+              height: 30,
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Location',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      '${item['street']}',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      '${item['city']}, ${item['state']}, ${item['zipCode']}',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      '${item['country']}',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              color: Colors.grey[200],
+              height: 30,
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Notes',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
