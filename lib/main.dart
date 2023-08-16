@@ -27,7 +27,7 @@ class ListReportPage extends StatefulWidget {
 class _ListReportPageState extends State<ListReportPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = '';
-  
+
   bool isEditing = false;
 
   @override
@@ -654,7 +654,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 2),
+                      const SizedBox(height: 4),
                       Text(
                         '${widget.item['street']}',
                         style: const TextStyle(
@@ -699,6 +699,44 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
                 width: double.infinity,
                 color: Colors.grey[200],
                 height: 30,
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Assigned Employee',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2amYoC3Sbo7zXr6dYH5hDE2_QyzGPO7Jd1w&usqp=CAU',
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Text(
+                            '${widget.item['assignedEmployee'][0]['name']}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               Container(
@@ -818,11 +856,6 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
                     );
                   },
                 ),
-              ),
-              Container(
-                width: double.infinity,
-                color: Colors.grey[200],
-                height: 30,
               ),
             ],
           ),
