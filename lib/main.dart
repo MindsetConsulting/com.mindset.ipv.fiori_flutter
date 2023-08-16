@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'data.dart';
 
 void main() {
   runApp(const MainApp());
@@ -26,75 +27,7 @@ class ListReportPage extends StatefulWidget {
 class _ListReportPageState extends State<ListReportPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = '';
-  final List<Map<String, dynamic>> _items = [
-    {
-      'id': '0',
-      'item': 'Stuff',
-      'description': 'my stuff',
-      'additionalInfo': 'don\'t touch my stuff',
-      'status': 'Approved',
-      'street': '123 Main St',
-      'city': 'Anytown',
-      'state': 'CA',
-      'zipCode': '12345',
-      'country': 'USA',
-      'quantity': 1,
-      'notes': [
-        {
-          'text':
-              'This is a note with a bunch of extra text to see what it will look like no other reason than that just a bunch of text for testing this note thing',
-          'date': '08/01/2021',
-        },
-        {
-          'text': 'This is another note',
-          'date': '08/01/2021',
-        },
-      ],
-    },
-    {
-      'id': '1',
-      'item': 'Things',
-      'description': 'your things',
-      'additionalInfo': 'all your things are belong to us',
-      'status': 'Rejected',
-      'street': '456 Main St',
-      'city': 'Anytown',
-      'state': 'CA',
-      'zipCode': '12345',
-      'country': 'USA',
-      'quantity': 5,
-      'notes': [
-        {
-          'text': 'This is a note',
-          'date': '08/01/2021',
-        },
-      ],
-    },
-    {
-      'id': '2',
-      'item': 'Product',
-      'description': 'our product',
-      'additionalInfo': 'this is the best product',
-      'status': 'Pending',
-      'street': '789 Main St',
-      'city': 'Anytown',
-      'state': 'CA',
-      'zipCode': '12345',
-      'country': 'USA',
-      'quantity': 10,
-      'notes': [
-        {
-          'text': 'This is a note',
-          'date': '08/01/2021',
-        },
-        {
-          'text': 'This is another note',
-          'date': '08/01/2021',
-        },
-      ],
-    },
-  ];
-
+  
   bool isEditing = false;
 
   @override
@@ -193,12 +126,13 @@ class _ListReportPageState extends State<ListReportPage> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  _items.add({
-                    'id': _items.length.toString(),
+                  items.add({
+                    'id': items.length.toString(),
                     'item': item,
                     'description': description,
                     'additionalInfo': additionalInfo,
                     'status': 'Pending',
+                    'priority': 'Low',
                     'street': '',
                     'city': '',
                     'state': '',
@@ -278,7 +212,7 @@ class _ListReportPageState extends State<ListReportPage> {
           const SizedBox(height: 8),
           Expanded(
             child: ListView.separated(
-              itemCount: _items.length,
+              itemCount: items.length,
               separatorBuilder: (BuildContext context, int index) {
                 return Divider(
                   color: Colors.grey[300],
@@ -288,13 +222,13 @@ class _ListReportPageState extends State<ListReportPage> {
               },
               itemBuilder: (BuildContext context, int index) {
                 if (_searchText.isNotEmpty &&
-                    !(_items[index]['item']!
+                    !(items[index]['item']!
                             .toLowerCase()
                             .contains(_searchText.toLowerCase()) ||
-                        _items[index]['description']!
+                        items[index]['description']!
                             .toLowerCase()
                             .contains(_searchText.toLowerCase()) ||
-                        _items[index]['additionalInfo']!
+                        items[index]['additionalInfo']!
                             .toLowerCase()
                             .contains(_searchText.toLowerCase()))) {
                   return const SizedBox.shrink();
@@ -306,17 +240,17 @@ class _ListReportPageState extends State<ListReportPage> {
                   ),
                   leading: isEditing
                       ? Checkbox(
-                          value: _items[index]['isChecked'] == 'true',
+                          value: items[index]['isChecked'] == 'true',
                           onChanged: (value) {
                             setState(() {
-                              _items[index]['isChecked'] = value.toString();
+                              items[index]['isChecked'] = value.toString();
                             });
                           },
                         )
                       : CircleAvatar(
                           backgroundColor: Colors.blue,
                           child: Text(
-                            '${_items[index]['quantity']}',
+                            '${items[index]['quantity']}',
                             style: const TextStyle(
                               fontFamily: 'SAP72',
                               fontWeight: FontWeight.bold,
@@ -332,20 +266,20 @@ class _ListReportPageState extends State<ListReportPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _items[index]['item']!,
+                              items[index]['item']!,
                               style: const TextStyle(
                                 fontFamily: 'SAP72',
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              _items[index]['description']!,
+                              items[index]['description']!,
                               style: const TextStyle(
                                 fontFamily: 'SAP72',
                               ),
                             ),
                             Text(
-                              _items[index]['additionalInfo']!,
+                              items[index]['additionalInfo']!,
                               style: const TextStyle(
                                   fontFamily: 'SAP72',
                                   fontSize: 12,
@@ -359,14 +293,14 @@ class _ListReportPageState extends State<ListReportPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            _items[index]['status'] == 'Approved'
+                            items[index]['status'] == 'Approved'
                                 ? Icons.check_circle_outline_rounded
-                                : _items[index]['status'] == 'Pending'
+                                : items[index]['status'] == 'Pending'
                                     ? Icons.pending_actions
                                     : Icons.cancel_outlined,
-                            color: _items[index]['status'] == 'Approved'
+                            color: items[index]['status'] == 'Approved'
                                 ? Colors.green
-                                : _items[index]['status'] == 'Pending'
+                                : items[index]['status'] == 'Pending'
                                     ? Colors.blue
                                     : Colors.red,
                           ),
@@ -382,12 +316,12 @@ class _ListReportPageState extends State<ListReportPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ObjectDetailPage(
-                                    item: _items[index],
+                                    item: items[index],
                                     updateItemStatus: (updatedItem) {
                                       setState(() {
-                                        int index = _items.indexWhere((item) =>
+                                        int index = items.indexWhere((item) =>
                                             item['id'] == updatedItem['id']);
-                                        _items[index] = updatedItem;
+                                        items[index] = updatedItem;
                                       });
                                     },
                                   ),
@@ -474,7 +408,7 @@ class _ListReportPageState extends State<ListReportPage> {
                                 ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      _items.removeWhere((item) =>
+                                      items.removeWhere((item) =>
                                           item['isChecked'] == 'true');
                                       isEditing = false;
                                     });
@@ -606,19 +540,6 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
             color: Colors.black,
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Edit',
-              style: TextStyle(
-                fontFamily: 'SAP72',
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -676,17 +597,36 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
                           ),
                         ),
                         const SizedBox(width: 16),
-                        Icon(
-                          _status == 'Approved'
-                              ? Icons.check_circle_outline_rounded
-                              : _status == 'Pending'
-                                  ? Icons.pending_actions
-                                  : Icons.cancel_outlined,
-                          color: _status == 'Approved'
-                              ? Colors.green
-                              : _status == 'Pending'
-                                  ? Colors.blue
-                                  : Colors.red,
+                        Column(
+                          children: [
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Icon(
+                              _status == 'Approved'
+                                  ? Icons.check_circle_outline_rounded
+                                  : _status == 'Pending'
+                                      ? Icons.pending_actions
+                                      : Icons.cancel_outlined,
+                              color: _status == 'Approved'
+                                  ? Colors.green
+                                  : _status == 'Pending'
+                                      ? Colors.blue
+                                      : Colors.red,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              widget.item['priority']!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: widget.item['priority'] == 'Low'
+                                    ? Colors.black
+                                    : widget.item['priority'] == 'Medium'
+                                        ? Colors.black
+                                        : Colors.red,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -708,7 +648,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Location',
+                        'Supplier Information',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -735,9 +675,30 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
                           fontSize: 14,
                         ),
                       ),
+                      const SizedBox(height: 20),
+                      Text(
+                        '${widget.item['phone']}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${widget.item['email']}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                     ],
                   ),
                 ),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                width: double.infinity,
+                color: Colors.grey[200],
+                height: 30,
               ),
               const SizedBox(height: 10),
               Container(
@@ -871,54 +832,123 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _status == 'Approved' || _status == 'Rejected'
-                ? const TextButton(
-                    onPressed: null,
-                    child: Text(
-                      'Reject',
-                      style: TextStyle(
-                        fontFamily: 'SAP72',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
+            IconButton(
+              onPressed: () {
+                // TODO: Implement edit button functionality
+              },
+              icon: const Icon(
+                Icons.edit,
+                color: Colors.blue,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                final TextEditingController controller = TextEditingController(
+                    text: widget.item['quantity'].toString());
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Quantity'),
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              int quantity = int.parse(controller.text);
+                              quantity--;
+                              controller.text = quantity.toString();
+                            },
+                            icon: const Icon(Icons.remove),
+                          ),
+                          SizedBox(
+                            width: 50,
+                            child: Container(
+                              child: TextField(
+                                controller: controller,
+                                textAlign: TextAlign.center,
+                                keyboardType: TextInputType.number,
+                                onChanged: (String value) {
+                                  setState(() {
+                                    widget.item['quantity'] = int.parse(value);
+                                  });
+                                },
+                                style: const TextStyle(
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              int quantity = int.parse(controller.text);
+                              quantity++;
+                              controller.text = quantity.toString();
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
                       ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              widget.item['quantity'] =
+                                  int.parse(controller.text);
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Save'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              icon: const Icon(
+                Icons.format_list_numbered,
+                color: Colors.blue,
+              ),
+            ),
+            _status == 'Approved' || _status == 'Rejected'
+                ? const IconButton(
+                    onPressed: null,
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.grey,
                     ),
                   )
-                : TextButton(
+                : IconButton(
                     onPressed: () {
                       _showConfirmationDialog('Reject');
                     },
-                    child: const Text(
-                      'Reject',
-                      style: TextStyle(
-                        fontFamily: 'SAP72',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                      ),
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.red,
                     ),
                   ),
             _status == 'Approved' || _status == 'Rejected'
-                ? const TextButton(
+                ? const IconButton(
                     onPressed: null,
-                    child: Text(
-                      'Approve',
-                      style: TextStyle(
-                        fontFamily: 'SAP72',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
+                    icon: Icon(
+                      Icons.check,
+                      color: Colors.grey,
                     ),
                   )
-                : TextButton(
+                : IconButton(
                     onPressed: () {
                       _showConfirmationDialog('Approve');
                     },
-                    child: const Text(
-                      'Approve',
-                      style: TextStyle(
-                        fontFamily: 'SAP72',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
+                    icon: const Icon(
+                      Icons.check,
+                      color: Colors.green,
                     ),
                   ),
           ],
