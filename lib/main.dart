@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MainApp());
@@ -39,8 +40,15 @@ class _ListReportPageState extends State<ListReportPage> {
       'country': 'USA',
       'quantity': 1,
       'notes': [
-        {'text': 'This is a note'},
-        {'text': 'This is another note'},
+        {
+          'text':
+              'This is a note with a bunch of extra text to see what it will look like no other reason than that just a bunch of text for testing this note thing',
+          'date': '08/01/2021',
+        },
+        {
+          'text': 'This is another note',
+          'date': '08/01/2021',
+        },
       ],
     },
     {
@@ -56,7 +64,10 @@ class _ListReportPageState extends State<ListReportPage> {
       'country': 'USA',
       'quantity': 5,
       'notes': [
-        {'text': 'This is a note'},
+        {
+          'text': 'This is a note',
+          'date': '08/01/2021',
+        },
       ],
     },
     {
@@ -72,7 +83,14 @@ class _ListReportPageState extends State<ListReportPage> {
       'country': 'USA',
       'quantity': 10,
       'notes': [
-        {'text': 'This is a note'},
+        {
+          'text': 'This is a note',
+          'date': '08/01/2021',
+        },
+        {
+          'text': 'This is another note',
+          'date': '08/01/2021',
+        },
       ],
     },
   ];
@@ -602,190 +620,251 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
           ),
         ],
       ),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 70,
-              child: Center(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.blue,
-                        child: Text(
-                          '${widget.item['quantity']}',
-                          style: const TextStyle(
-                            fontFamily: 'SAP72',
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 70,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 0, horizontal: 16.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.blue,
+                          child: Text(
+                            '${widget.item['quantity']}',
+                            style: const TextStyle(
+                              fontFamily: 'SAP72',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${widget.item['item']}',
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${widget.item['item']}',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              '${widget.item['description']}',
-                              style: const TextStyle(
-                                fontSize: 14,
+                              const SizedBox(height: 2),
+                              Text(
+                                '${widget.item['description']}',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              '${widget.item['additionalInfo']}',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontStyle: FontStyle.italic,
+                              const SizedBox(height: 2),
+                              Text(
+                                '${widget.item['additionalInfo']}',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontStyle: FontStyle.italic,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Icon(
+                          _status == 'Approved'
+                              ? Icons.check_circle_outline_rounded
+                              : _status == 'Pending'
+                                  ? Icons.pending_actions
+                                  : Icons.cancel_outlined,
+                          color: _status == 'Approved'
+                              ? Colors.green
+                              : _status == 'Pending'
+                                  ? Colors.blue
+                                  : Colors.red,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                width: double.infinity,
+                color: Colors.grey[200],
+                height: 30,
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Location',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Icon(
-                        _status == 'Approved'
-                            ? Icons.check_circle_outline_rounded
-                            : _status == 'Pending'
-                                ? Icons.pending_actions
-                                : Icons.cancel_outlined,
-                        color: _status == 'Approved'
-                            ? Colors.green
-                            : _status == 'Pending'
-                                ? Colors.blue
-                                : Colors.red,
+                      const SizedBox(height: 2),
+                      Text(
+                        '${widget.item['street']}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${widget.item['city']?.isNotEmpty ?? false ? '${widget.item['city']}, ' : ''}${widget.item['state']?.isNotEmpty ?? false ? '${widget.item['state']}, ' : ''}${widget.item['zipCode']?.isNotEmpty ?? false ? '${widget.item['zipCode']}' : ''}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${widget.item['country']}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              width: double.infinity,
-              color: Colors.grey[200],
-              height: 30,
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              const SizedBox(height: 10),
+              Container(
+                width: double.infinity,
+                color: Colors.grey[200],
+                height: 30,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Location',
+                      'Notes',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '${widget.item['street']}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '${widget.item['city']?.isNotEmpty ?? false ? '${widget.item['city']}, ' : ''}${widget.item['state']?.isNotEmpty ?? false ? '${widget.item['state']}, ' : ''}${widget.item['zipCode']?.isNotEmpty ?? false ? '${widget.item['zipCode']}' : ''}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '${widget.item['country']}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            String noteText = '';
+                            return AlertDialog(
+                              title: const Text('Add Note'),
+                              content: TextField(
+                                maxLines: null,
+                                onChanged: (value) {
+                                  noteText = value;
+                                },
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    final now = DateTime.now();
+                                    final date =
+                                        DateFormat('M/d/yyyy').format(now);
+                                    final newNote = {
+                                      'text': noteText,
+                                      'date': date,
+                                    };
+                                    setState(() {
+                                      widget.item['notes'].add(newNote);
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Add Note'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.add),
+                      color: Colors.blue,
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              width: double.infinity,
-              color: Colors.grey[200],
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Notes',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.add),
-                    color: Colors.blue,
-                  ),
-                ],
+              Container(
+                width: double.infinity,
+                color: Colors.grey[200],
+                height: 2,
               ),
-            ),
-            Container(
-              width: double.infinity,
-              color: Colors.grey[200],
-              height: 2,
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: widget.item['notes'].length,
-                itemBuilder: (BuildContext context, int index) {
-                  final note = widget.item['notes'][index];
-                  return Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          note['text'],
-                          style: const TextStyle(fontSize: 14),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 16.0),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: widget.item['notes'].length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final note = widget.item['notes'][index];
+                    final date = DateFormat('MM/dd/yyyy')
+                        .format(DateFormat('MM/dd/yyyy').parse(note['date']));
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: ListTile(
+                                title: Text(
+                                  note['text'],
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                date,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      if (index != widget.item['notes'].length - 1)
-                        const Divider(
-                          color: Color.fromARGB(255, 226, 225, 225),
-                          height: 1,
-                          thickness: 1,
-                        ),
-                    ],
-                  );
-                },
+                        if (index != widget.item['notes'].length - 1)
+                          const Divider(
+                            color: Color.fromARGB(255, 226, 225, 225),
+                            height: 1,
+                            thickness: 1,
+                          ),
+                      ],
+                    );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              width: double.infinity,
-              color: Colors.grey[200],
-              height: 30,
-            ),
-          ],
+              Container(
+                width: double.infinity,
+                color: Colors.grey[200],
+                height: 30,
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
