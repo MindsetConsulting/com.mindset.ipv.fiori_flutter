@@ -25,7 +25,7 @@ class ListReportPage extends StatefulWidget {
 class _ListReportPageState extends State<ListReportPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = '';
-  final List<Map<String, String>> _items = [
+  final List<Map<String, dynamic>> _items = [
     {
       'id': '0',
       'item': 'Stuff',
@@ -37,7 +37,11 @@ class _ListReportPageState extends State<ListReportPage> {
       'state': 'CA',
       'zipCode': '12345',
       'country': 'USA',
-      'notes': 'This is a note|This is another note',
+      'quantity': 1,
+      'notes': [
+        {'text': 'This is a note'},
+        {'text': 'This is another note'},
+      ],
     },
     {
       'id': '1',
@@ -50,7 +54,10 @@ class _ListReportPageState extends State<ListReportPage> {
       'state': 'CA',
       'zipCode': '12345',
       'country': 'USA',
-      'notes': 'This is a note',
+      'quantity': 5,
+      'notes': [
+        {'text': 'This is a note'},
+      ],
     },
     {
       'id': '2',
@@ -63,7 +70,10 @@ class _ListReportPageState extends State<ListReportPage> {
       'state': 'CA',
       'zipCode': '12345',
       'country': 'USA',
-      'notes': 'This is a note',
+      'quantity': 10,
+      'notes': [
+        {'text': 'This is a note'},
+      ],
     },
   ];
 
@@ -89,6 +99,7 @@ class _ListReportPageState extends State<ListReportPage> {
     String item = '';
     String description = '';
     String additionalInfo = '';
+    int quantity = 1;
 
     showDialog(
       context: context,
@@ -101,34 +112,51 @@ class _ListReportPageState extends State<ListReportPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Item',
+          content: Form(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Item',
+                  ),
+                  onChanged: (value) {
+                    item = value;
+                  },
                 ),
-                onChanged: (value) {
-                  item = value;
-                },
-              ),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Description',
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Description',
+                  ),
+                  onChanged: (value) {
+                    description = value;
+                  },
                 ),
-                onChanged: (value) {
-                  description = value;
-                },
-              ),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Additional Information',
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Additional Information',
+                  ),
+                  onChanged: (value) {
+                    additionalInfo = value;
+                  },
                 ),
-                onChanged: (value) {
-                  additionalInfo = value;
-                },
-              ),
-            ],
+                DropdownButtonFormField<int>(
+                  value: quantity,
+                  decoration: const InputDecoration(
+                    labelText: 'Quantity',
+                  ),
+                  items: List.generate(10, (index) => index + 1)
+                      .map((value) => DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    quantity = value!;
+                  },
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -158,7 +186,8 @@ class _ListReportPageState extends State<ListReportPage> {
                     'state': '',
                     'zipCode': '',
                     'country': ' ',
-                    'notes': '{}',
+                    'quantity': quantity.toString(),
+                    'notes': '[]',
                   });
                 });
                 Navigator.pop(context);
@@ -185,7 +214,7 @@ class _ListReportPageState extends State<ListReportPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          'List Report',
+          'Product List',
           style: TextStyle(
             fontFamily: 'SAP72',
             fontWeight: FontWeight.bold,
@@ -269,7 +298,7 @@ class _ListReportPageState extends State<ListReportPage> {
                       : CircleAvatar(
                           backgroundColor: Colors.blue,
                           child: Text(
-                            '${_items[index]['id']}',
+                            '${_items[index]['quantity']}',
                             style: const TextStyle(
                               fontFamily: 'SAP72',
                               fontWeight: FontWeight.bold,
@@ -457,11 +486,9 @@ class _ListReportPageState extends State<ListReportPage> {
   }
 }
 
-
-
 class ObjectDetailPage extends StatefulWidget {
-  final Map<String, String> item;
-  final Function(Map<String, String>) updateItemStatus;
+  final Map<String, dynamic> item;
+  final Function(Map<String, dynamic>) updateItemStatus;
 
   const ObjectDetailPage({
     Key? key,
@@ -554,7 +581,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
           },
         ),
         title: const Text(
-          'Object Details',
+          'Product Details',
           style: TextStyle(
             fontFamily: 'SAP72',
             fontWeight: FontWeight.bold,
@@ -591,7 +618,7 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
                       CircleAvatar(
                         backgroundColor: Colors.blue,
                         child: Text(
-                          '${widget.item['id']}',
+                          '${widget.item['quantity']}',
                           style: const TextStyle(
                             fontFamily: 'SAP72',
                             fontWeight: FontWeight.bold,
@@ -699,30 +726,60 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
               color: Colors.grey[200],
               height: 30,
             ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Notes',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add),
+                    color: Colors.blue,
+                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 10),
             Container(
               width: double.infinity,
               color: Colors.grey[200],
               height: 2,
             ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: widget.item['notes'].length,
+                itemBuilder: (BuildContext context, int index) {
+                  final note = widget.item['notes'][index];
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          note['text'],
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                      if (index != widget.item['notes'].length - 1)
+                        const Divider(
+                          color: Color.fromARGB(255, 226, 225, 225),
+                          height: 1,
+                          thickness: 1,
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ),
             const SizedBox(height: 10),
-
             Container(
               width: double.infinity,
               color: Colors.grey[200],
