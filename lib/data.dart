@@ -54,7 +54,7 @@ final List<Map<String, dynamic>> items = [
     'quantity': 5,
     'assignedEmployee': [
       {
-        'name': 'Jane Doe',
+        'name': '',
       }
     ],
     'notes': [

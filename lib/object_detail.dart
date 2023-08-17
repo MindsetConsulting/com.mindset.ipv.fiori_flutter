@@ -282,22 +282,32 @@ class _ObjectDetailPageState extends State<ObjectDetailPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 8),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2amYoC3Sbo7zXr6dYH5hDE2_QyzGPO7Jd1w&usqp=CAU',
-                            ),
-                          ),
+                          widget.item['assignedEmployee'][0]['name'] != ''
+                              ? const CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2amYoC3Sbo7zXr6dYH5hDE2_QyzGPO7Jd1w&usqp=CAU',
+                                  ),
+                                )
+                              : const SizedBox(),
                           const SizedBox(width: 16),
-                          Text(
-                            '${widget.item['assignedEmployee'][0]['name']}',
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
+                          widget.item['assignedEmployee'][0]['name'] != ''
+                              ? Text(
+                                  '${widget.item['assignedEmployee'][0]['name']}',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                )
+                              : const Text(
+                                  'No employee currently assigned',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
                         ],
                       ),
                       const SizedBox(height: 2),
