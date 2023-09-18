@@ -77,7 +77,7 @@ class _ListReportPageState extends State<ListReportPage> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Description',
+                    labelText: 'Serial Number',
                   ),
                   onChanged: (value) {
                     description = value;
@@ -85,7 +85,7 @@ class _ListReportPageState extends State<ListReportPage> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Additional Information',
+                    labelText: 'Description',
                   ),
                   onChanged: (value) {
                     additionalInfo = value;
@@ -96,7 +96,7 @@ class _ListReportPageState extends State<ListReportPage> {
                   decoration: const InputDecoration(
                     labelText: 'Quantity',
                   ),
-                  items: List.generate(10, (index) => index + 1)
+                  items: List.generate(100, (index) => index + 1)
                       .map((value) => DropdownMenuItem<int>(
                             value: value,
                             child: Text(value.toString()),
@@ -366,12 +366,10 @@ class _ListReportPageState extends State<ListReportPage> {
                     setState(() {
                       isEditing = !isEditing;
                     });
-                  } else {
-                    // Filter button functionality here
                   }
                 },
                 child: Text(
-                  isEditing ? 'Cancel' : 'Filter',
+                  isEditing ? 'Cancel' : '',
                   style: const TextStyle(
                     color: Colors.blue,
                     fontFamily: 'SAP72',

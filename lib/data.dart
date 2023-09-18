@@ -1,7 +1,7 @@
 final List<Map<String, dynamic>> items = [
   {
     'id': '0',
-    'item': 'Product 1',
+    'item': 'ByteBlaze Pro',
     'description': '1234-QW-567',
     'additionalInfo': 'this is a good product',
     'status': 'Approved',
@@ -39,7 +39,7 @@ final List<Map<String, dynamic>> items = [
   },
   {
     'id': '1',
-    'item': 'Product 2',
+    'item': 'CircuitCore Elite',
     'description': '2345-ER-678',
     'additionalInfo': 'this is a better product',
     'status': 'Rejected',
@@ -72,7 +72,7 @@ final List<Map<String, dynamic>> items = [
   },
   {
     'id': '2',
-    'item': 'Product 3',
+    'item': 'DataDrive Ultra',
     'description': '3456-TY-789',
     'additionalInfo': 'this is the best product',
     'status': 'Pending',
@@ -105,7 +105,7 @@ final List<Map<String, dynamic>> items = [
   },
   {
     'id': '3',
-    'item': 'Product 4',
+    'item': 'LogicLink Plus',
     'description': '4567-UI-890',
     'additionalInfo': 'this is a new product',
     'status': 'Pending',
@@ -120,7 +120,7 @@ final List<Map<String, dynamic>> items = [
     'quantity': 20,
     'assignedEmployee': [
       {
-        'name': 'John Doe',
+        'name': '',
       }
     ],
     'notes': [
@@ -138,7 +138,7 @@ final List<Map<String, dynamic>> items = [
   },
   {
     'id': '4',
-    'item': 'Product 5',
+    'item': 'MicroMega Max',
     'description': '5678-YT-901',
     'additionalInfo': 'this is a popular product',
     'status': 'Approved',
@@ -153,7 +153,7 @@ final List<Map<String, dynamic>> items = [
     'quantity': 50,
     'assignedEmployee': [
       {
-        'name': 'Jane Doe',
+        'name': '',
       }
     ],
     'notes': [
@@ -171,7 +171,7 @@ final List<Map<String, dynamic>> items = [
   },
   {
     'id': '5',
-    'item': 'Product 6',
+    'item': 'NetNode Extreme',
     'description': '6789-OP-123',
     'additionalInfo': 'this is a unique product',
     'status': 'Pending',
@@ -204,7 +204,7 @@ final List<Map<String, dynamic>> items = [
   },
   {
     'id': '6',
-    'item': 'Product 7',
+    'item': 'PixelPlex Pro',
     'description': '7890-QW-234',
     'additionalInfo': 'this is a high-end product',
     'status': 'Approved',
@@ -219,7 +219,7 @@ final List<Map<String, dynamic>> items = [
     'quantity': 2,
     'assignedEmployee': [
       {
-        'name': 'Jane Smith',
+        'name': '',
       }
     ],
     'notes': [
@@ -237,7 +237,7 @@ final List<Map<String, dynamic>> items = [
   },
   {
     'id': '7',
-    'item': 'Product 8',
+    'item': 'TechTonic Titan',
     'description': '8901-ER-345',
     'additionalInfo': 'this is a budget product',
     'status': 'Pending',
@@ -270,7 +270,7 @@ final List<Map<String, dynamic>> items = [
   },
   {
     'id': '8',
-    'item': 'Product 9',
+    'item': 'WebWave Elite',
     'description': '9012-TY-456',
     'additionalInfo': 'this is a customizable product',
     'status': 'Pending',
