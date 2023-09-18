@@ -14,6 +14,8 @@ This app was built in with 7 days of development time by a single developer who 
 ## Github Copilot
 
 Github CoPilot was used extensively to create this application. The purpose of this project was to explore more of the capabilities and limitations of Github CoPilot. Some of the findings are:
+
+
 PROS:
 - Development work is so much faster! Especially if you know specifically what you want and the architecture of your application. You can create a functioning application in an incredibly short amount of time.
 - For less experienced developers, the ability for CoPilot to explain chunks of code is incredibly invaluable. This application was created by a developer with less than 2 weeks experience developing in Flutter and Dart.
